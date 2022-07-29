@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import { Box } from "@chakra-ui/react";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 
 export default function Profile() {
   return (
@@ -18,7 +19,7 @@ export default function Profile() {
           <div className="border-t border-gray-200">
             <dl>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Full name</dt>
+                <dt className="text-sm font-medium text-gray-500">Name (DID)</dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   Margot Foster
                 </dd>
@@ -29,6 +30,7 @@ export default function Profile() {
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   margotfoster@example.com
+                  <CheckCircleIcon ml="1%" />
                 </dd>
               </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -37,14 +39,14 @@ export default function Profile() {
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   887652876451
+                  <CheckCircleIcon ml="1%" />
                 </dd>
               </div>
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">
-                  Pan
-                </dt>
+                <dt className="text-sm font-medium text-gray-500">Pan</dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                   GTRDE8727B
+                  <CheckCircleIcon ml="1%" />
                 </dd>
               </div>
             </dl>
