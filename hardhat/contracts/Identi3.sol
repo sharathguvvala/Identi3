@@ -12,11 +12,11 @@ contract Identi3 is Ownable {
     mapping(string => address) public digitalIdentities;
     Register[] public allRegisteredAddresses;
     constructor() {}
-    function register(string memory _name, string memory _email) public {
+    function register(string memory _name) public {
         require(digitalIdentities[_name] == address(0), "already taken");
         digitalIdentities[_name] =msg.sender;
         didIds.increment();
-        Register registeredForDID = new Register(_name, _email, msg.sender);
+        Register registeredForDID = new Register(_name, msg.sender);
         allRegisteredAddresses.push(registeredForDID);
     }
     function getRegisteredContracts() public view returns(Register[] memory) {
@@ -26,23 +26,63 @@ contract Identi3 is Ownable {
 
 contract Register is Ownable {
     string public name;
-    string public email;
-    bool private primaryEducation;
-    bool private secondaryEducation;
-    bool private higherEducation;
-    bool private ugEducation;
-    bool private pgEducation;
-    bool private phdEducation;
-    string[] private cid;
-    uint256[] private seq;
-    constructor(string memory _name, string memory _email, address _owner) {
+    string private email;
+    string private phone;
+    string private aadhaar;
+    string private pan;
+    bool private emailVerified;
+    bool private phoneVerified;
+    bool private aadhaarVerified;
+    bool private panVerified;
+    mapping(address => bool) private thirdParties;
+    constructor(string memory _name, address _owner) {
         name = _name;
-        email = _email;
         _transferOwnership(_owner);
     }
-    function issueCred(string memory _cid, uint256 _num) public {
-        require(owner() != msg.sender, "cannot issue");
-        cid.push(_cid);
-        seq.push(_num);
+    function verifyEmail(string memory _email) public {
+        require(owner() == msg.sender, "not the owner");
+        require(emailVerified == false, "already verified");
+        email = _email;
+        emailVerified = true;
+    }
+    function verifyPhone(string memory _phone) public {
+        require(owner() == msg.sender, "not the owner");
+        require(phoneVerified == false, "already verified");
+        phone = _phone;
+        phoneVerified = true;
+    }
+    function verifyAadhaar(string memory _aadhaar) public {
+        require(owner() == msg.sender, "not the owner");
+        require(aadhaarVerified == false, "already verified");
+        aadhaar = _aadhaar;
+        aadhaarVerified = true;
+    }
+    function verifyPan(string memory _pan) public {
+        require(owner() == msg.sender, "not the owner");
+        require(panVerified == false, "already verified");
+        pan = _pan;
+        panVerified = true;
+    }
+    modifier allowedParty() {
+        require(thirdParties[msg.sender] == true, "not allowed");
+        _;
+    }
+    function getEmail() public allowedParty view returns(string memory) {
+        return email;
+    }
+    function getPhone() public allowedParty view returns(string memory) {
+        return phone;
+    }
+    function getAadhaar() public allowedParty view returns(string memory) {
+        return aadhaar;
+    }
+    function getPan() public allowedParty view returns(string memory) {
+        return pan;
+    }
+    function addParty(address _address) public onlyOwner {
+        thirdParties[_address] = true;
+    }
+    function removeParty(address _address) public onlyOwner {
+        thirdParties[_address] = false;
     }
 }
