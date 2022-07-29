@@ -5,9 +5,8 @@ import Link from "next/link";
 export default function Navbar() {
   return (
     <nav class="flex justify-center items-center space-x-4 mt-10">
-      <ConnectButton />
-      <Link href="/issuecredentials">
-        <a class="no-underline">Issue Credential</a>
+      <Link href="/">
+        <a class="no-underline">Home</a>
       </Link>
       <Link href="/verifycredentials">
         <a class="no-underline">Verify Credential</a>
@@ -15,6 +14,7 @@ export default function Navbar() {
       <Link href="/profile">
         <a class="no-underline">Profile</a>
       </Link>
+      <ConnectButton />
     </nav>
   );
 }
