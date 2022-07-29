@@ -10,29 +10,39 @@ contract Identi3 is Ownable {
     using Counters for Counters.Counter;
     Counters.Counter public didIds;
     mapping(string => address) public digitalIdentities;
-    mapping(address => bool) public registered;
-    mapping(string => Holder) private holders;
-    struct Holder {
-        string email;
-        string name;
-        string cid;
-        address holderAddress;
-        address issuerAddress;
-    }
+    Register[] public allRegisteredAddresses;
     constructor() {}
-    function register(string memory _name) public {
-        require(registered[msg.sender] == false, 'already registered');
+    function register(string memory _name, string memory _email) public {
+        require(digitalIdentities[_name] == address(0), "already taken");
         digitalIdentities[_name] =msg.sender;
-        registered[msg.sender] = true;
         didIds.increment();
+        Register registeredForDID = new Register(_name, _email, msg.sender);
+        allRegisteredAddresses.push(registeredForDID);
     }
-    function issueCred(string memory _email, string memory _name, string memory _cid) public {
-        require(registered[digitalIdentities[_name]] == true);
-        holders[_name] = Holder(_email, _name, _cid, digitalIdentities[_name], msg.sender);
+    function getRegisteredContracts() public view returns(Register[] memory) {
+        return allRegisteredAddresses;
     }
-    function getHolder(string memory _name) public view returns(Holder memory) {
-        require(digitalIdentities[_name] == msg.sender, "not registered");
-        require(holders[_name].holderAddress == msg.sender);
-        return holders[_name];
+}
+
+contract Register is Ownable {
+    string public name;
+    string public email;
+    bool private primaryEducation;
+    bool private secondaryEducation;
+    bool private higherEducation;
+    bool private ugEducation;
+    bool private pgEducation;
+    bool private phdEducation;
+    string[] private cid;
+    uint256[] private seq;
+    constructor(string memory _name, string memory _email, address _owner) {
+        name = _name;
+        email = _email;
+        _transferOwnership(_owner);
+    }
+    function issueCred(string memory _cid, uint256 _num) public {
+        require(owner() != msg.sender, "cannot issue");
+        cid.push(_cid);
+        seq.push(_num);
     }
 }
