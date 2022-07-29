@@ -11,7 +11,7 @@ contract Identi3 is Ownable {
     Counters.Counter public didIds;
     mapping(string => address) public digitalIdentities;
     mapping(address => bool) public registered;
-    mapping(string => Holder) public holders;
+    mapping(string => Holder) private holders;
     struct Holder {
         string email;
         string name;
@@ -19,9 +19,7 @@ contract Identi3 is Ownable {
         address holderAddress;
         address issuerAddress;
     }
-    constructor() {
-        _transferOwnership(_msgSender());
-    }
+    constructor() {}
     function register(string memory _name) public {
         require(registered[msg.sender] == false, 'already registered');
         digitalIdentities[_name] =msg.sender;
@@ -29,8 +27,12 @@ contract Identi3 is Ownable {
         didIds.increment();
     }
     function issueCred(string memory _email, string memory _name, string memory _cid) public {
-        address _address = digitalIdentities[_name];
-        require(registered[_address] == true, "not registered");
+        require(registered[digitalIdentities[_name]] == true);
         holders[_name] = Holder(_email, _name, _cid, digitalIdentities[_name], msg.sender);
+    }
+    function getHolder(string memory _name) public view returns(Holder memory) {
+        require(digitalIdentities[_name] == msg.sender, "not registered");
+        require(holders[_name].holderAddress == msg.sender);
+        return holders[_name];
     }
 }
