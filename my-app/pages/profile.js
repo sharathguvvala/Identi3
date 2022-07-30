@@ -27,7 +27,7 @@ export default function Profile() {
       const status = await Identi3Contract.registered(address);
       console.log(status);
       setRegistered(status);
-      if(status == true) {
+      if (status == true) {
         await getName();
         await getEmail();
         await getPhone();
@@ -51,9 +51,9 @@ export default function Profile() {
       console.log(name);
       setName(name);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const getEmail = async () => {
     try {
@@ -67,9 +67,9 @@ export default function Profile() {
       console.log(email);
       setEmail(email);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const getPhone = async () => {
     try {
@@ -119,6 +119,26 @@ export default function Profile() {
     }
   };
 
+  const getRequests = async () => {
+    try {
+      const registerAddress = await Identi3Contract.profileToContract(address);
+      const registeredContract = new Contract(
+        registerAddress,
+        RegisterABI,
+        provider
+      );
+      console.log(registeredContract)
+      const count = await registeredContract.requests();
+      console.log(count)
+      for (var i = 0; i < count; i++) {
+        const address = await registeredContract.accessRequests(i);
+        console.log(address);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   function renderContent() {
     if (registered) {
       return (
@@ -149,16 +169,22 @@ export default function Profile() {
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                       {email}
-                      {email?(<div><CheckCircleIcon ml="1%" /></div>):(<div>Email not provided!</div>)}
+                      {email ? (
+                        <CheckCircleIcon ml="1%" />
+                      ) : (
+                        <div>Email not provided!</div>
+                      )}
                     </dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt className="text-sm font-medium text-gray-500">
-                      Phone
-                    </dt>
+                    <dt className="text-sm font-medium text-gray-500">Phone</dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                       {phone}
-                      {phone?(<div><CheckCircleIcon ml="1%" /></div>):(<div>Phone not provided!</div>)}
+                      {phone ? (
+                        <CheckCircleIcon ml="1%" />
+                      ) : (
+                        <div>Phone not provided!</div>
+                      )}
                     </dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -167,20 +193,29 @@ export default function Profile() {
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                       {aadhaar}
-                      {aadhaar?(<div><CheckCircleIcon ml="1%" /></div>):(<div>Aadhaar not provided!</div>)}
+                      {aadhaar ? (
+                        <CheckCircleIcon ml="1%" />
+                      ) : (
+                        <div>Aadhaar not provided!</div>
+                      )}
                     </dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt className="text-sm font-medium text-gray-500">PAN</dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                       {pan}
-                      {pan?(<div><CheckCircleIcon ml="1%" /></div>):(<div>PAN not provided!</div>)}
+                      {pan ? (
+                        <CheckCircleIcon ml="1%" />
+                      ) : (
+                        <div>PAN not provided!</div>
+                      )}
                     </dd>
                   </div>
                 </dl>
               </div>
             </div>
           </Box>
+          <Box></Box>
         </div>
       );
     } else {
@@ -198,6 +233,7 @@ export default function Profile() {
 
   useEffect(() => {
     getRegisteredStatus();
+    getRequests();
   }, []);
 
   return (

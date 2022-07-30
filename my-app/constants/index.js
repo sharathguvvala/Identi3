@@ -1,4 +1,4 @@
-export const Identi3Address = "0x4aD376A9246AB513A665fD39762c70427852D522";
+export const Identi3Address = "0xF4264467ada2c6Aca4C8B8de3Ab24b0B960c4189";
 export const Identi3ABI = [
   {
     inputs: [],
@@ -208,6 +208,25 @@ export const RegisterABI = [
     ],
     name: "OwnershipTransferred",
     type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "accessRequests",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
     inputs: [
@@ -437,6 +456,32 @@ export const RegisterABI = [
     name: "renounceOwnership",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+    ],
+    name: "requestAccess",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "requests",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "_value",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
