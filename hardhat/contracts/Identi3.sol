@@ -68,20 +68,39 @@ contract Register is Ownable {
         pan = _pan;
         panVerified = true;
     }
-    modifier allowedParty() {
-        require(thirdParties[msg.sender] == true, "not allowed");
-        _;
+    function allowStatus(address _address) public view returns(bool) {
+        return thirdParties[_address];
     }
-    function getEmail() public allowedParty view returns(string memory) {
+    function checkEmailStatus(address _address) public view returns(bool) {
+        require(thirdParties[_address] == true, "not allowed");
+        return emailVerified;
+    }
+    function checkPhoneStatus(address _address) public view returns(bool) {
+        require(thirdParties[_address] == true, "not allowed");
+        return phoneVerified;
+    }
+    function checkAadhaarStatus(address _address) public view returns(bool) {
+        require(thirdParties[_address] == true, "not allowed");
+        return aadhaarVerified;
+    }
+    function checkPanStatus(address _address) public view returns(bool) {
+        require(thirdParties[_address] == true, "not allowed");
+        return panVerified;
+    }
+    function getEmail(address _address) public view returns(string memory) {
+        require(thirdParties[_address] == true, "not allowed");
         return email;
     }
-    function getPhone() public allowedParty view returns(string memory) {
+    function getPhone(address _address) public view returns(string memory) {
+        require(thirdParties[_address] == true, "not allowed");
         return phone;
     }
-    function getAadhaar() public allowedParty view returns(string memory) {
+    function getAadhaar(address _address) public view returns(string memory) {
+        require(thirdParties[_address] == true, "not allowed");
         return aadhaar;
     }
-    function getPan() public allowedParty view returns(string memory) {
+    function getPan(address _address) public view returns(string memory) {
+        require(thirdParties[_address] == true, "not allowed");
         return pan;
     }
     function addParty(address _address) public onlyOwner {
