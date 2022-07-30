@@ -11,6 +11,8 @@ contract Identi3 is Ownable {
     Counters.Counter public didIds;
     mapping(string => address) public digitalIdentities;
     Register[] public allRegisteredAddresses;
+    mapping (address => Register) public profileToContract;
+    mapping (address => bool) public registered;
     constructor() {}
     function register(string memory _name) public {
         require(digitalIdentities[_name] == address(0), "already taken");
@@ -18,6 +20,8 @@ contract Identi3 is Ownable {
         didIds.increment();
         Register registeredForDID = new Register(_name, msg.sender);
         allRegisteredAddresses.push(registeredForDID);
+        profileToContract[msg.sender] = registeredForDID;
+        registered[msg.sender] = true;
     }
     function getRegisteredContracts() public view returns(Register[] memory) {
         return allRegisteredAddresses;
@@ -38,6 +42,7 @@ contract Register is Ownable {
     constructor(string memory _name, address _owner) {
         name = _name;
         _transferOwnership(_owner);
+        thirdParties[_owner] = true;
     }
     function verifyEmail(string memory _email) public {
         require(owner() == msg.sender, "not the owner");
