@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, List, ListItem } from "@chakra-ui/react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Identi3Address, Identi3ABI, RegisterABI } from "../constants/index";
 import { useSigner, useProvider, useAccount, useContract } from "wagmi";
@@ -21,6 +21,7 @@ export default function Profile() {
   const [phone, setPhone] = useState("");
   const [aadhaar, setAadhaar] = useState("");
   const [pan, setPan] = useState("");
+  const [requests, setRequests] = useState("");
 
   const getRegisteredStatus = async () => {
     try {
@@ -127,13 +128,14 @@ export default function Profile() {
         RegisterABI,
         provider
       );
-      console.log(registeredContract)
       const count = await registeredContract.requests();
-      console.log(count)
+      var requests = [];
       for (var i = 0; i < count; i++) {
         const address = await registeredContract.accessRequests(i);
         console.log(address);
+        requests.push(address);
       }
+      setRequests(requests);
     } catch (error) {
       console.log(error);
     }
@@ -215,7 +217,17 @@ export default function Profile() {
               </div>
             </div>
           </Box>
-          <Box></Box>
+          <Box>
+            {requests ? (
+              <List spacing={3}>
+                {requests.map((request, index)=>{
+                  <ListItem key={index}>{request}</ListItem>
+                })}
+              </List>
+            ) : (
+              <div></div>
+            )}
+          </Box>
         </div>
       );
     } else {

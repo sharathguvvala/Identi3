@@ -48,6 +48,10 @@ export default function Dashboard() {
           RegisterABI,
           provider
         );
+        const owner = await registeredContract.owner();
+        if(owner === address) {
+            continue;
+        }
         const name = await registeredContract.name();
         const allowed = await registeredContract.allowStatus(address);
         if (allowed == true) {
@@ -130,6 +134,31 @@ export default function Dashboard() {
     }
   };
 
+  const requestAccess = async (e) => {
+    try {
+        const name = e.target.value;
+        const status = await Identi3Contract.registered(address);
+        if(status == true) {
+            const profileAddress = await Identi3Contract.digitalIdentities(name);
+            const registeredAddress = await Identi3Contract.profileToContract(profileAddress);
+            const registeredContract = new Contract(
+                registeredAddress,
+                RegisterABI,
+                provider
+              );
+              const txn = await registeredContract.requestAccess(address);
+              console.log("requesting access");
+              await txn.wait();
+              console.log("requested");
+        }
+        else {
+            console.log("not registered")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+  }
+
   useEffect(() => {
     getAllProfiles();
     getRegisteredStatus();
@@ -162,7 +191,7 @@ export default function Dashboard() {
                             <Text>{profile.name}</Text>
                         </div>
                         <Box>
-                          <Button mt={4} colorScheme="teal">
+                          <Button mt={4} colorScheme="teal" onClick={(e)=>requestAccess(e)} value={profile.name}>
                             Request Access
                           </Button>
                         </Box>
