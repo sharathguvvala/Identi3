@@ -22,6 +22,7 @@ export default function VerifyCredentials() {
 
   const register = async () => {
     try {
+      console.log(name)
       const txn = await Identi3Contract.register(name);
       console.log("registration started");
       await txn.wait();
@@ -42,7 +43,7 @@ export default function VerifyCredentials() {
     }
   };
 
-  function renderButton() {
+  function renderContent() {
     if (registered) {
       return (
         <div>
@@ -58,9 +59,9 @@ export default function VerifyCredentials() {
           <Box w="50%" mx="25%" mt="3%">
             <FormControl>
               <FormLabel>Name</FormLabel>
-              <Input type="text" onClick={(e)=>{setName(e.target.value)}} />
+              <Input type="text" onChange={(e)=>{setName(e.target.value)}} />
             </FormControl>
-            <Button mt={4} colorScheme="teal" type="submit" onClick={register}>
+            <Button mt={4} colorScheme="teal" onClick={register}>
               Register
             </Button>
           </Box>
@@ -76,7 +77,7 @@ export default function VerifyCredentials() {
   return (
     <div>
       <Navbar />
-      {renderButton()}
+      {renderContent()}
     </div>
   );
 }
