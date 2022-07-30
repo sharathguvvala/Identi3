@@ -4,15 +4,15 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav class="flex justify-center items-center space-x-4 mt-10">
+    <nav className="flex justify-center items-center space-x-4 mt-10">
       <Link href="/">
-        <a class="no-underline">Home</a>
+        <a className="no-underline">Home</a>
       </Link>
       <Link href="/verifycredentials">
-        <a class="no-underline">Verify Credential</a>
+        <a className="no-underline">Verify Credential</a>
       </Link>
       <Link href="/profile">
-        <a class="no-underline">Profile</a>
+        <a className="no-underline">Profile</a>
       </Link>
       <ConnectButton />
     </nav>

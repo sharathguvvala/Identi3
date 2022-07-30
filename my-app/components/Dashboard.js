@@ -115,7 +115,7 @@ export default function Dashboard() {
                     {profile.status == false ? (
                       <div>
                         <Badge colorScheme="purple">No Access</Badge>
-                        <div class="flex flex-col">
+                        <div className="flex flex-col">
                           <Text>{profile.name}</Text>
                         </div>
                         <Box>
@@ -132,7 +132,7 @@ export default function Dashboard() {
                     ) : (
                       <div>
                         <Badge colorScheme="green">Access</Badge>
-                        <div class="flex flex-col">
+                        <div className="flex flex-col">
                           <Text>Name: {profile.name}</Text>
                           <Text>{profile.user.email}</Text>
                           <Text>{profile.user.phone}</Text>

@@ -243,7 +243,7 @@ export default function Profile() {
               <List>
                 {requests.map((request, index) => {
                   return (
-                    <div class="flex flex-row">
+                    <div className="flex flex-row">
                       <ListItem key={index} mt="3%">
                         {request}
                       </ListItem>
