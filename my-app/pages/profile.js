@@ -235,7 +235,7 @@ export default function Profile() {
               </div>
             </div>
           </Box>
-          <Box w="50%" mx="25%" mt="3%">
+          {/* <Box w="50%" mx="25%" mt="3%">
             <h3>
               <b>Requests</b>
             </h3>
@@ -265,7 +265,7 @@ export default function Profile() {
             ) : (
               <div></div>
             )}
-          </Box>
+          </Box> */}
         </div>
       );
     } else {
