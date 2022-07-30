@@ -72,7 +72,7 @@ export default function Email() {
     }
   };
 
-  function renderButton() {
+  function renderContent() {
     if (verified) {
       return (
         <div>
@@ -105,5 +105,5 @@ export default function Email() {
     getVerifiedStatus();
   }, []);
 
-  return <div>{renderButton()}</div>;
+  return <div>{renderContent()}</div>;
 }

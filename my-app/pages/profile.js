@@ -1,8 +1,32 @@
 import Navbar from "../components/Navbar";
 import { Box } from "@chakra-ui/react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
+import { Identi3Address, Identi3ABI, RegisterABI } from "../constants/index";
+import { useSigner, useProvider, useAccount, useContract } from "wagmi";
+import { useEffect, useState } from "react";
+import { Contract } from "ethers";
 
 export default function Profile() {
+  const provider = useProvider();
+  const { data: signer } = useSigner();
+  const Identi3Contract = useContract({
+    addressOrName: Identi3Address,
+    contractInterface: Identi3ABI,
+    signerOrProvider: signer || provider,
+  });
+  const { address } = useAccount();
+  const [registered, setRegistered] = useState(false);
+
+  const getRegisteredStatus = async () => {
+    try {
+      const status = await Identi3Contract.registered(address);
+      console.log(status);
+      setRegistered(status);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Navbar />

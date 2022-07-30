@@ -72,14 +72,14 @@ export default function Email() {
     }
   };
 
-  function renderButton() {
+  function renderContent() {
     if (verified) {
       return (
         <div>
           <Box w="50%" mx="25%" mt="1%">
             <FormControl>
               <FormLabel>Aadhaar (UIDAI)</FormLabel>
-              <Input type="text" placeholder={aadhaar} />
+              <Input type="text" readOnly placeholder={aadhaar} />
             </FormControl>
           </Box>
         </div>
@@ -105,5 +105,5 @@ export default function Email() {
     getVerifiedStatus();
   }, []);
 
-  return <div>{renderButton()}</div>;
+  return <div>{renderContent()}</div>;
 }
