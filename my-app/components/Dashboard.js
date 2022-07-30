@@ -116,7 +116,7 @@ export default function Dashboard() {
                       <div>
                         <Badge colorScheme="purple">No Access</Badge>
                         <div className="flex flex-col">
-                          <Text>{profile.name}</Text>
+                          <Text key={index}>{profile.name}</Text>
                         </div>
                         <Box>
                           <Button
@@ -124,6 +124,7 @@ export default function Dashboard() {
                             colorScheme="teal"
                             onClick={(e) => requestAccess(e)}
                             value={profile.name}
+                            key={index}
                           >
                             Request Access
                           </Button>
@@ -133,11 +134,11 @@ export default function Dashboard() {
                       <div>
                         <Badge colorScheme="green">Access</Badge>
                         <div className="flex flex-col">
-                          <Text>Name: {profile.name}</Text>
-                          <Text>{profile.user.email}</Text>
-                          <Text>{profile.user.phone}</Text>
-                          <Text>{profile.user.aadhaar}</Text>
-                          <Text>{profile.user.pan}</Text>
+                          <Text key={index}>Name: {profile.name}</Text>
+                          <Text key={index}>{profile.user.email}</Text>
+                          <Text key={index}>{profile.user.phone}</Text>
+                          <Text key={index}>{profile.user.aadhaar}</Text>
+                          <Text key={index}>{profile.user.pan}</Text>
                         </div>
                       </div>
                     )}
