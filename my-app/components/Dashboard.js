@@ -49,23 +49,21 @@ export default function Dashboard() {
           provider
         );
         const owner = await registeredContract.owner();
-        if(owner === address) {
-            continue;
-        }
-        const name = await registeredContract.name();
-        const allowed = await registeredContract.allowStatus(address);
-        if (allowed == true) {
-          const email = await getEmail(registeredAddress);
-          const phone = await getPhone(registeredAddress);
-          const aadhaar = await getAadhaar(registeredAddress);
-          const pan = await getPan(registeredAddress);
-          let profile = { name, email, phone, aadhaar, pan, status: true };
-          console.log(profile);
-          profiles.push(profile);
+        if (owner === address) {
+          continue;
         } else {
-          let profile = { name, status: false };
-          console.log(profile);
-          profiles.push(profile);
+          const name = await registeredContract.name();
+          const allowed = await registeredContract.allowStatus(address);
+          if (allowed == true) {
+            const user = await registeredContract.profile(address);
+            console.log(user);
+            let profile = { name, user };
+            profiles.push(profile);
+          } else {
+            let profile = { name, status: false };
+            console.log(profile);
+            profiles.push(profile);
+          }
         }
       }
       setProfiles(profiles);
@@ -74,90 +72,31 @@ export default function Dashboard() {
     }
   };
 
-  const getEmail = async (registeredAddress) => {
-    try {
-      const registeredContract = new Contract(
-        registeredAddress,
-        RegisterABI,
-        provider
-      );
-      const email = await registeredContract.getEmail(address);
-      console.log(email);
-      return email;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getPhone = async (registeredAddress) => {
-    try {
-      const registeredContract = new Contract(
-        registeredAddress,
-        RegisterABI,
-        provider
-      );
-      const phone = await registeredContract.getPhone(address);
-      console.log(phone);
-      return phone;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getAadhaar = async (registeredAddress) => {
-    try {
-      const registeredContract = new Contract(
-        registeredAddress,
-        RegisterABI,
-        provider
-      );
-      const aadhaar = await registeredContract.getAadhaar(address);
-      console.log(aadhaar);
-      return aadhaar;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getPan = async (registeredAddress) => {
-    try {
-      const registeredContract = new Contract(
-        registeredAddress,
-        RegisterABI,
-        provider
-      );
-      const pan = await registeredContract.getPan(address);
-      console.log(pan);
-      return pan;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const requestAccess = async (e) => {
     try {
-        const name = e.target.value;
-        const status = await Identi3Contract.registered(address);
-        if(status == true) {
-            const profileAddress = await Identi3Contract.digitalIdentities(name);
-            const registeredAddress = await Identi3Contract.profileToContract(profileAddress);
-            const registeredContract = new Contract(
-                registeredAddress,
-                RegisterABI,
-                provider
-              );
-              const txn = await registeredContract.requestAccess(address);
-              console.log("requesting access");
-              await txn.wait();
-              console.log("requested");
-        }
-        else {
-            console.log("not registered")
-        }
+      const name = e.target.value;
+      const status = await Identi3Contract.registered(address);
+      if (status == true) {
+        const profileAddress = await Identi3Contract.digitalIdentities(name);
+        const registeredAddress = await Identi3Contract.profileToContract(
+          profileAddress
+        );
+        const registeredContract = new Contract(
+          registeredAddress,
+          RegisterABI,
+          signer
+        );
+        const txn = await registeredContract.requestAccess(address);
+        console.log("requesting access");
+        await txn.wait();
+        console.log("requested");
+      } else {
+        console.log("not registered");
+      }
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     getAllProfiles();
@@ -172,29 +111,34 @@ export default function Dashboard() {
             {profiles.map((profile, index) => {
               return (
                 <WrapItem key={index} w="500px" h="150px" bg="gray.100">
-                  <Center pl="10%"> 
+                  <Center pl="10%">
                     {profile.status == false ? (
-                      <div>
-                        <Badge colorScheme="green">Access</Badge>
-                        <div class="flex flex-col">
-                            <Text>{profile.name}</Text>
-                            <Text>{profile.name}</Text>
-                            <Text>{profile.name}</Text>
-                            <Text>{profile.name}</Text>
-                            <Text>{profile.name}</Text>
-                        </div>
-                      </div>
-                    ) : (
                       <div>
                         <Badge colorScheme="purple">No Access</Badge>
                         <div class="flex flex-col">
-                            <Text>{profile.name}</Text>
+                          <Text>{profile.name}</Text>
                         </div>
                         <Box>
-                          <Button mt={4} colorScheme="teal" onClick={(e)=>requestAccess(e)} value={profile.name}>
+                          <Button
+                            mt={4}
+                            colorScheme="teal"
+                            onClick={(e) => requestAccess(e)}
+                            value={profile.name}
+                          >
                             Request Access
                           </Button>
                         </Box>
+                      </div>
+                    ) : (
+                      <div>
+                        <Badge colorScheme="green">Access</Badge>
+                        <div class="flex flex-col">
+                          <Text>Name: {profile.name}</Text>
+                          <Text>{profile.user.email}</Text>
+                          <Text>{profile.user.phone}</Text>
+                          <Text>{profile.user.aadhaar}</Text>
+                          <Text>{profile.user.pan}</Text>
+                        </div>
                       </div>
                     )}
                   </Center>

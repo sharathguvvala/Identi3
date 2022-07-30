@@ -111,6 +111,7 @@ contract Register is Ownable {
     }
     function addParty(address _address) public onlyOwner {
         thirdParties[_address] = true;
+        requests.decrement();
     }
     function removeParty(address _address) public onlyOwner {
         thirdParties[_address] = false;
@@ -118,5 +119,9 @@ contract Register is Ownable {
     function requestAccess(address _address) public {
         accessRequests.push(_address);
         requests.increment();
+    }
+    function profile(address _address) public view returns(Profile memory) {
+        require(thirdParties[_address] == true, "not allowed");
+        return myProfile;
     }
 }

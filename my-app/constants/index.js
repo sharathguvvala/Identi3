@@ -1,4 +1,4 @@
-export const Identi3Address = "0x1cC8Da3E31B31E1E7F09094f0C8eE0ce2f326900";
+export const Identi3Address = "0x14317A6C5F1c34be731104E5301eA44fca839B6a";
 export const Identi3ABI = [
   {
     inputs: [],
@@ -433,6 +433,47 @@ export const RegisterABI = [
         internalType: "address",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+    ],
+    name: "profile",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "email",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "phone",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "aadhaar",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "pan",
+            type: "string",
+          },
+        ],
+        internalType: "struct Register.Profile",
+        name: "",
+        type: "tuple",
       },
     ],
     stateMutability: "view",

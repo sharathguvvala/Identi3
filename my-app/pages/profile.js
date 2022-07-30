@@ -141,6 +141,24 @@ export default function Profile() {
     }
   };
 
+  const approve = async (requestAddress) => {
+    try {
+      console.log(requestAddress)
+      const registerAddress = await Identi3Contract.profileToContract(address);
+      const registeredContract = new Contract(
+        registerAddress,
+        RegisterABI,
+        signer
+      );
+      const txn = await registeredContract.addParty(requestAddress);
+      console.log("started approval");
+      await txn.wait();
+      console.log("approved");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   function renderContent() {
     if (registered) {
       return (
@@ -217,11 +235,31 @@ export default function Profile() {
               </div>
             </div>
           </Box>
-          <Box>
+          <Box w="50%" mx="25%" mt="3%">
+            <h3>
+              <b>Requests</b>
+            </h3>
             {requests ? (
-              <List spacing={3}>
-                {requests.map((request, index)=>{
-                  <ListItem key={index}>{request}</ListItem>
+              <List>
+                {requests.map((request, index) => {
+                  return (
+                    <div class="flex flex-row">
+                      <ListItem key={index} mt="3%">
+                        {request}
+                      </ListItem>
+                      <Button
+                        mt={4}
+                        ml={4}
+                        colorScheme="teal"
+                        value={request}
+                        onClick={(e) => {
+                          approve(e.target.value);
+                        }}
+                      >
+                        Approve
+                      </Button>
+                    </div>
+                  );
                 })}
               </List>
             ) : (
