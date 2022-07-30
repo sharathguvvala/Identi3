@@ -105,7 +105,7 @@ export default function Email() {
               colorScheme="teal"
               onClick={verify}
             >
-              Submit & Verify Email
+              Submit
             </Button>
           </Box>
         </div>

@@ -93,7 +93,7 @@ export default function Email() {
               <Input type="tel" onChange={(e)=>{setPhone(e.target.value)}} />
             </FormControl>
             <Button mt={4} colorScheme="teal" onClick={verify}>
-              Submit & Verify Phone
+              Submit
             </Button>
           </Box>
         </div>
