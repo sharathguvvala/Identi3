@@ -104,59 +104,9 @@ export default function Dashboard() {
   }, []);
 
   return (
+    // 
     <div>
-      <Box mx="15%" my="5%">
-        {profiles && registered ? (
-          <Wrap spacing="70px">
-            {profiles.map((profile, index) => {
-              return (
-                <WrapItem key={index} w="500px" h="150px" bg="gray.100">
-                  <Center pl="10%">
-                    {profile.status == false ? (
-                      <div>
-                        <Badge colorScheme="purple">No Access</Badge>
-                        <div className="flex flex-col">
-                          <Text key={index}>{profile.name}</Text>
-                        </div>
-                        <Box>
-                          <Button
-                            mt={4}
-                            colorScheme="teal"
-                            onClick={(e) => requestAccess(e)}
-                            value={profile.name}
-                            key={index}
-                          >
-                            Request Access
-                          </Button>
-                        </Box>
-                      </div>
-                    ) : (
-                      <div>
-                        <Badge colorScheme="green">Access</Badge>
-                        <div className="flex flex-col">
-                          <Text key={index}>Name: {profile.name}</Text>
-                          <Text key={index}>{profile.user.email}</Text>
-                          <Text key={index}>{profile.user.phone}</Text>
-                          <Text key={index}>{profile.user.aadhaar}</Text>
-                          <Text key={index}>{profile.user.pan}</Text>
-                        </div>
-                      </div>
-                    )}
-                  </Center>
-                </WrapItem>
-              );
-            })}
-          </Wrap>
-        ) : (
-          <div>
-            <Box w="10%" mx="45%" mt="5%">
-              <Button mt={4} colorScheme="teal">
-                Register
-              </Button>
-            </Box>
-          </div>
-        )}
-      </Box>
+        
     </div>
   );
 }
