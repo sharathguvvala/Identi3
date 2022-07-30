@@ -1,4 +1,4 @@
-export const Identi3Address = "0xF4264467ada2c6Aca4C8B8de3Ab24b0B960c4189";
+export const Identi3Address = "0x1cC8Da3E31B31E1E7F09094f0C8eE0ce2f326900";
 export const Identi3ABI = [
   {
     inputs: [],
