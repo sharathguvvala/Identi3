@@ -87,6 +87,22 @@ export default function Profile() {
     }
   };
 
+  const listen = async () => {
+    try {
+      const registerAddress = await Identi3Contract.profileToContract(address);
+      const registeredContract = new Contract(
+        registerAddress,
+        RegisterABI,
+        provider
+      );
+      console.log("started")
+      registeredContract.on('AccessRequest', (from, to, access)=>console.log(from, to, access))
+      console.log(ended)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const approve = async (requestAddress) => {
     try {
       console.log(requestAddress)
@@ -229,13 +245,14 @@ export default function Profile() {
 
   useEffect(() => {
     getRegisteredStatus();
-    getRequests();
+    // getRequests();
   }, []);
 
   return (
     <div>
       <Navbar />
       {renderContent()}
+      <button onClick={listen}>listen</button>
     </div>
   );
 }

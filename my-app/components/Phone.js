@@ -90,7 +90,12 @@ export default function Email() {
           <Box w="50%" mx="25%" mt="1%">
             <FormControl>
               <FormLabel>Phone address</FormLabel>
-              <Input type="tel" onChange={(e)=>{setPhone(e.target.value)}} />
+              <Input
+                type="tel"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
+              />
             </FormControl>
             <Button mt={4} colorScheme="teal" onClick={verify}>
               Submit

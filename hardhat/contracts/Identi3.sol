@@ -35,7 +35,7 @@ contract Register is Ownable {
     bool private aadhaarVerified;
     bool private panVerified;
     mapping(address => bool) private thirdParties;
-    address[] public accessRequests;
+    mapping(address => bool) public accessRequests;
     using Counters for Counters.Counter;
     Counters.Counter public requests;
     struct Profile {
@@ -45,6 +45,7 @@ contract Register is Ownable {
         string pan;
     }
     Profile private myProfile;
+    event AccessRequest(address indexed from, address indexed to, bool access);
     constructor(string memory _name, address _owner) {
         name = _name;
         _transferOwnership(_owner);
@@ -77,22 +78,6 @@ contract Register is Ownable {
     function allowStatus(address _address) public view returns(bool) {
         return thirdParties[_address];
     }
-    function checkEmailStatus(address _address) public view returns(bool) {
-        require(thirdParties[_address] == true, "not allowed");
-        return emailVerified;
-    }
-    function checkPhoneStatus(address _address) public view returns(bool) {
-        require(thirdParties[_address] == true, "not allowed");
-        return phoneVerified;
-    }
-    function checkAadhaarStatus(address _address) public view returns(bool) {
-        require(thirdParties[_address] == true, "not allowed");
-        return aadhaarVerified;
-    }
-    function checkPanStatus(address _address) public view returns(bool) {
-        require(thirdParties[_address] == true, "not allowed");
-        return panVerified;
-    }
     function getEmail(address _address) public view returns(string memory) {
         require(thirdParties[_address] == true, "not allowed");
         return myProfile.email;
@@ -115,9 +100,10 @@ contract Register is Ownable {
     }
     function removeParty(address _address) public onlyOwner {
         thirdParties[_address] = false;
+        emit AccessRequest(_address, owner(), false);
     }
     function requestAccess(address _address) public {
-        accessRequests.push(_address);
+        emit AccessRequest(_address, owner(), true);
         requests.increment();
     }
     function profile(address _address) public view returns(Profile memory) {
