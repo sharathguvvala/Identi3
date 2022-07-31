@@ -97,7 +97,7 @@ export default function Profile() {
       );
       console.log("started")
       registeredContract.on('AccessRequest', (from, to, access)=>console.log(from, to, access))
-      console.log(ended)
+      console.log("ended")
     } catch (error) {
       console.log(error)
     }
