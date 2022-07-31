@@ -17,10 +17,7 @@ export default function Profile() {
   const { address } = useAccount();
   const [registered, setRegistered] = useState(false);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [aadhaar, setAadhaar] = useState("");
-  const [pan, setPan] = useState("");
+  const [profile, setProfile] =  useState("");
   const [requests, setRequests] = useState("");
 
   const getRegisteredStatus = async () => {
@@ -30,15 +27,28 @@ export default function Profile() {
       setRegistered(status);
       if (status == true) {
         await getName();
-        await getEmail();
-        await getPhone();
-        await getAadhaar();
-        await getPan();
+        await getProfile();
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const getProfile = async () => {
+    try {
+      const registerAddress = await Identi3Contract.profileToContract(address);
+      const registeredContract = new Contract(
+        registerAddress,
+        RegisterABI,
+        provider
+      );
+      const profile = await registeredContract.profile(address);
+      console.log(profile)
+      setProfile(profile);
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getName = async () => {
     try {
@@ -51,70 +61,6 @@ export default function Profile() {
       const name = await registeredContract.name();
       console.log(name);
       setName(name);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getEmail = async () => {
-    try {
-      const registerAddress = await Identi3Contract.profileToContract(address);
-      const registeredContract = new Contract(
-        registerAddress,
-        RegisterABI,
-        provider
-      );
-      const email = await registeredContract.getEmail(address);
-      console.log(email);
-      setEmail(email);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getPhone = async () => {
-    try {
-      const registerAddress = await Identi3Contract.profileToContract(address);
-      const registeredContract = new Contract(
-        registerAddress,
-        RegisterABI,
-        provider
-      );
-      const phone = await registeredContract.getPhone(address);
-      console.log(phone);
-      setPhone(phone);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getAadhaar = async () => {
-    try {
-      const registerAddress = await Identi3Contract.profileToContract(address);
-      const registeredContract = new Contract(
-        registerAddress,
-        RegisterABI,
-        provider
-      );
-      const aadhaar = await registeredContract.getAadhaar(address);
-      console.log(aadhaar);
-      setAadhaar(aadhaar);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getPan = async () => {
-    try {
-      const registerAddress = await Identi3Contract.profileToContract(address);
-      const registeredContract = new Contract(
-        registerAddress,
-        RegisterABI,
-        provider
-      );
-      const pan = await registeredContract.getPan(address);
-      console.log(pan);
-      setPan(pan);
     } catch (error) {
       console.log(error);
     }
@@ -188,8 +134,8 @@ export default function Profile() {
                       Email address
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {email}
-                      {email ? (
+                      {profile.email}
+                      {profile.email ? (
                         <CheckCircleIcon ml="1%" />
                       ) : (
                         <div>Email not provided!</div>
@@ -199,8 +145,8 @@ export default function Profile() {
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt className="text-sm font-medium text-gray-500">Phone</dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {phone}
-                      {phone ? (
+                      {profile.phone}
+                      {profile.phone ? (
                         <CheckCircleIcon ml="1%" />
                       ) : (
                         <div>Phone not provided!</div>
@@ -212,8 +158,8 @@ export default function Profile() {
                       Aadhaar (UIDAI)
                     </dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {aadhaar}
-                      {aadhaar ? (
+                      {profile.aadhaar}
+                      {profile.aadhaar ? (
                         <CheckCircleIcon ml="1%" />
                       ) : (
                         <div>Aadhaar not provided!</div>
@@ -223,8 +169,8 @@ export default function Profile() {
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt className="text-sm font-medium text-gray-500">PAN</dt>
                     <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                      {pan}
-                      {pan ? (
+                      {profile.pan}
+                      {profile.pan ? (
                         <CheckCircleIcon ml="1%" />
                       ) : (
                         <div>PAN not provided!</div>
